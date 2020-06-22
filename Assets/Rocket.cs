@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -29,7 +30,12 @@ public class Rocket : MonoBehaviour
             case "Fuel":
                 print("Fuel");
                 break;
+            case "finish":
+                SceneManager.LoadScene(1);
+                print("you are here!!");
+                break;
             default:
+                SceneManager.LoadScene(0);
                 print("Dead");
                 break;
         }
