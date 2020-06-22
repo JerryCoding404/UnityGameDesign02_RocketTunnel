@@ -7,8 +7,13 @@ public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float mainThrust = 100f;
-    Rigidbody rigidBody;
-    AudioSource audioSource;
+    [SerializeField] AudioClip mainEngine;
+
+    public Rigidbody rigidBody;
+    public AudioSource audioSource;
+    public enum State { Alive, Dying, Transcending };
+    public State state = State.Alive;
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -16,12 +21,17 @@ public class Rocket : MonoBehaviour
     }
     void Update()
     {
-        Thrust();
-        Rotate();
+        if (state == State.Alive)
+        {
+            Thrust();
+            Rotate();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive){ return; } //如果dead就不管collosion這件事了
+
         switch (collision.gameObject.tag)
         {
             case "Friendly":
@@ -31,15 +41,28 @@ public class Rocket : MonoBehaviour
                 print("Fuel");
                 break;
             case "finish":
-                SceneManager.LoadScene(1);
-                print("you are here!!");
+                state = State.Transcending;
+                Invoke("LoadNextScene", 1f); //建立新功能後記得將數值參數化、方便控制。
                 break;
             default:
-                SceneManager.LoadScene(0);
-                print("Dead");
+                state = State.Dying;
+                Invoke("LoadfirstScene", 1f);
                 break;
         }
     }
+
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene(1);
+        print("you are here!!");
+    }
+
+    void LoadfirstScene()
+    {
+        SceneManager.LoadScene(0);
+        print("Dead");
+    }
+
     void Thrust()
     {
         float thrustThisFrame = mainThrust * Time.deltaTime;
@@ -48,7 +71,7 @@ public class Rocket : MonoBehaviour
             rigidBody.AddRelativeForce(Vector3.up * thrustThisFrame);
             if (audioSource.isPlaying == false)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
             // print("Thrusting!!");
         }  

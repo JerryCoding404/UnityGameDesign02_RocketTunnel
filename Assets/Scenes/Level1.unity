@@ -1595,25 +1595,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: rcsThrust
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mainThrust
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 24559288689808434, guid: f553021583f5f834086b60a49e03503b,
+        type: 3}
+      propertyPath: rcsThrust
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 24559288689808434, guid: f553021583f5f834086b60a49e03503b,
+        type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 24559288689808434, guid: f553021583f5f834086b60a49e03503b,
+        type: 3}
+      propertyPath: mainEngine
+      value: 
+      objectReference: {fileID: 8300000, guid: a77890f3b99e2564296d7fa1854133ac, type: 3}
     - target: {fileID: 1638508462677550157, guid: f553021583f5f834086b60a49e03503b,
         type: 3}
       propertyPath: m_Name
       value: Rocket
       objectReference: {fileID: 0}
-    - target: {fileID: 1638508462677550161, guid: f553021583f5f834086b60a49e03503b,
+    - target: {fileID: 1638508462677550160, guid: f553021583f5f834086b60a49e03503b,
         type: 3}
-      propertyPath: rcsThrust
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 1638508462677550161, guid: f553021583f5f834086b60a49e03503b,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1638508462677550161, guid: f553021583f5f834086b60a49e03503b,
-        type: 3}
-      propertyPath: mainThrust
-      value: 120
+      propertyPath: m_audioClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1638508462677550162, guid: f553021583f5f834086b60a49e03503b,
         type: 3}
