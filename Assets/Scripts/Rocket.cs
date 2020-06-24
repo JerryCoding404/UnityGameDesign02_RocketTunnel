@@ -19,10 +19,9 @@ public class Rocket : MonoBehaviour
 
     Rigidbody rigidBody;
     AudioSource audioSource;
-    public enum State { Alive, Dying, Transcending };
-    public State state = State.Alive;
-    private Vector3 thrustThisFrame;
 
+    private Vector3 thrustThisFrame;
+    public bool isTransitioning = false;
     public bool collisiondisabled = false;
 
     void Start()
@@ -32,7 +31,7 @@ public class Rocket : MonoBehaviour
     }
     void Update()
     {
-        if (state == State.Alive)
+        if (!isTransitioning)
         {
             RespondToThrustInput();
             RespondToRotateInput();
@@ -55,7 +54,7 @@ public class Rocket : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (state != State.Alive || collisiondisabled) { return; } //如果dead就不管collosion這件事了
+        if (isTransitioning || collisiondisabled) { return; } //如果dead就不管collosion這件事了
 
         switch (collision.gameObject.tag)
         {
@@ -80,7 +79,7 @@ public class Rocket : MonoBehaviour
         WinParticles.Stop();
         mainEngineParticles.Stop();
         WinParticles.Play();
-        state = State.Transcending;
+        isTransitioning = true;
         Invoke("LoadNextScene", LevelLoadDelay); //建立新功能後記得將數值參數0化、方便控制。
     }
 
@@ -91,7 +90,7 @@ public class Rocket : MonoBehaviour
         DeathParticles.Stop();
         mainEngineParticles.Stop();
         DeathParticles.Play();
-        state = State.Dying;
+        isTransitioning = true;
         Invoke("LoadfirstScene", LevelLoadDelay);
     }
 
@@ -105,33 +104,6 @@ public class Rocket : MonoBehaviour
         {
             nextSceneIndex = 0;
         }
-
-        //另一種作法
-        //switch (currentSceneIndex)
-        //{
-        //    case 0:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 1:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 2:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 3:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 4:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 5:
-        //        nextSceneIndex = 1;
-        //        break;
-        //    case 6:
-        //        nextSceneIndex = -6; //回到Level1 (index = 0)
-        //        break;
-        // }
-        //currentSceneIndex = currentSceneIndex + nextSceneIndex;
 
         SceneManager.LoadScene(nextSceneIndex);
         print(nextSceneIndex);
@@ -170,7 +142,7 @@ public class Rocket : MonoBehaviour
 
     void RespondToRotateInput()
     {
-        rigidBody.freezeRotation = true; //控制物件旋轉後不會亂動。
+        rigidBody.angularVelocity = Vector3.zero;
         float rotateThisFrame = rcsThrust * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.A))
@@ -183,7 +155,5 @@ public class Rocket : MonoBehaviour
             transform.Rotate(-Vector3.forward * rotateThisFrame);
             // print("Rotate Right");
         }
-
-        rigidBody.freezeRotation = false; //在按完按鍵後將物體的旋轉關掉，不能控制旋轉，回到原本的狀態。
     }
 }
